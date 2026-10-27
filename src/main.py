@@ -13,7 +13,7 @@ fastapi = FastAPI()
 inventoy = [{"id":1, "name": "Treasure", "quantity":3}]
 
 # an item model
-class Item(BaseModel):
+class Items(BaseModel):
     name : str
     quantity : int
     
@@ -42,3 +42,13 @@ async def delete_item(item_id:int,authenticated:bool = Depends(authenticate)):
     inventoy.pop(idx)
     return {"item":item} 
 
+@fastapi.post("/items")
+async def add_item(data:Items):
+    item ={
+        "id":len(inventoy) + 1,
+        "name":data.name,
+        "quantity":data.quantity
+    }
+    
+    inventoy.append(item)
+    return item
